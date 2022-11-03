@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VirtualStoreBackEnd.Context;
+using Microsoft.Extensions.DependencyInjection;
+using VirtualStoreBackEnd.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<PostgresContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresContext") ?? throw new InvalidOperationException("Connection string 'PostgresContext' not found.")));
+builder.Services.AddDbContext<SQLServerContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerContext") ?? throw new InvalidOperationException("Connection string 'SQLServerContext' not found.")));
 
 // Add services to the container.
 
