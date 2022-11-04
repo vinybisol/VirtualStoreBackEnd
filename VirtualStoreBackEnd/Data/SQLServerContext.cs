@@ -11,5 +11,7 @@ namespace VirtualStoreBackEnd.Data
         }
 
         public DbSet<ProductModel> ProductModel { get; set; } = default!;
+
+        public DbSet<VirtualStoreBackEnd.Model.UserModel> UserModel { get; set; }
     }
 }

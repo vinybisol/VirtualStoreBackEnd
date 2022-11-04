@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VirtualStoreBackEnd.Data;
 using VirtualStoreBackEnd.Model;
@@ -16,14 +21,14 @@ namespace VirtualStoreBackEnd.Controllers
             _context = context;
         }
 
-        // GET: api/ProductModels
+        // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductModel>>> GetProductModel()
         {
             return await _context.ProductModel.ToListAsync();
         }
 
-        // GET: api/ProductModels/5
+        // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductModel>> GetProductModel(Guid id)
         {
@@ -37,7 +42,7 @@ namespace VirtualStoreBackEnd.Controllers
             return productModel;
         }
 
-        // PUT: api/ProductModels/5
+        // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductModel(Guid id, ProductModel productModel)
@@ -68,7 +73,7 @@ namespace VirtualStoreBackEnd.Controllers
             return NoContent();
         }
 
-        // POST: api/ProductModels
+        // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ProductModel>> PostProductModel(ProductModel productModel)
@@ -79,7 +84,7 @@ namespace VirtualStoreBackEnd.Controllers
             return CreatedAtAction("GetProductModel", new { id = productModel.Id }, productModel);
         }
 
-        // DELETE: api/ProductModels/5
+        // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductModel(Guid id)
         {
