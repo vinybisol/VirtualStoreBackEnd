@@ -7,6 +7,9 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:SQLServerContext"
+    },
+    "apis1": {
+      "type": "apis"
     }
   }
 }
