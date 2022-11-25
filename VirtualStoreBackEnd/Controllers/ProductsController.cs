@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +17,12 @@ namespace VirtualStoreBackEnd.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly SQLServerContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductsController(SQLServerContext context)
+        public ProductsController(SQLServerContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/Products
@@ -75,15 +78,38 @@ namespace VirtualStoreBackEnd.Controllers
             return NoContent();
         }
 
+        //// POST: api/Products
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<ProductModel>> PostProductModel(ProductModel productModel)
+        //{
+        //    _context.ProductModel.Add(productModel);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetProductModel", new { id = productModel.Id }, productModel);
+        //}
+
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ProductModel>> PostProductModel(ProductModel productModel)
+        public ActionResult PostProductModel(List<IFormFile> files)
         {
-            _context.ProductModel.Add(productModel);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProductModel", new { id = productModel.Id }, productModel);
+            if (files.Count == 0)
+                return BadRequest();
+            string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "UploadedFiles");
+
+            foreach (IFormFile file in files)
+            {
+                string filePath = Path.Combine(directoryPath, file.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+
+
+            return Ok();
         }
 
         // DELETE: api/Products/5

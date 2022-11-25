@@ -14,7 +14,7 @@ namespace VirtualStoreBackEnd.Model
 
         [Column("name")]
         //[Required]
-        [JsonPropertyName("ImageTest")]
+        //[JsonPropertyName("ImageTest")]
         [MaxLength(80)]        
         public string Name { get; set; } = default!;
 
@@ -48,7 +48,7 @@ namespace VirtualStoreBackEnd.Model
         //public string MarketObs { get; set; } = default!;
 
         [Column("image_test")]
-        public Object ImageTest { get; set; } = default!;
+        public Byte[] ImageTest { get; set; } = default!;
 
     }
 }
