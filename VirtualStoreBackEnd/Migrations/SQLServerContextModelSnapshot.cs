@@ -22,29 +22,47 @@ namespace VirtualStoreBackEnd.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("VirtualStoreBackEnd.Model.ImagesModel", b =>
+                {
+                    b.Property<Guid>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("product_id");
+
+                    b.Property<byte[]>("images1")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image1");
+
+                    b.Property<byte[]>("images2")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image2");
+
+                    b.Property<byte[]>("images3")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image3");
+
+                    b.Property<byte[]>("images4")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image5");
+
+                    b.Property<byte[]>("images5")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("image4");
+
+                    b.HasKey("_id");
+
+                    b.ToTable("images");
+                });
+
             modelBuilder.Entity("VirtualStoreBackEnd.Model.ProductModel", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("full_name");
-
-                    b.Property<string>("MarketObs")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("market_obs");
-
-                    b.Property<decimal>("MarketPrice")
-                        .IsConcurrencyToken()
-                        .HasPrecision(8, 2)
-                        .HasColumnType("decimal(8,2)")
-                        .HasColumnName("market_price");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -52,11 +70,11 @@ namespace VirtualStoreBackEnd.Migrations
                         .HasColumnType("nvarchar(80)")
                         .HasColumnName("name");
 
-                    b.Property<string>("Obs")
+                    b.Property<string>("Note")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
-                        .HasColumnName("obs");
+                        .HasColumnName("note");
 
                     b.Property<decimal>("Price")
                         .IsConcurrencyToken()
@@ -64,13 +82,19 @@ namespace VirtualStoreBackEnd.Migrations
                         .HasColumnType("decimal(8,2)")
                         .HasColumnName("price");
 
-                    b.Property<string>("TagId")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)")
-                        .HasColumnName("tag");
+                    b.Property<decimal>("PriceMarket")
+                        .IsConcurrencyToken()
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)")
+                        .HasColumnName("price_market");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("short_name");
+
+                    b.HasKey("_id");
 
                     b.ToTable("product");
                 });

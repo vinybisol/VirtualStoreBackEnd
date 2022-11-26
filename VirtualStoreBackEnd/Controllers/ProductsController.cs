@@ -52,7 +52,7 @@ namespace VirtualStoreBackEnd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductModel(Guid id, ProductModel productModel)
         {
-            if (id != productModel.Id)
+            if (id != productModel._id)
             {
                 return BadRequest();
             }
@@ -78,21 +78,21 @@ namespace VirtualStoreBackEnd.Controllers
             return NoContent();
         }
 
-        //// POST: api/Products
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<ProductModel>> PostProductModel(ProductModel productModel)
-        //{
-        //    _context.ProductModel.Add(productModel);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetProductModel", new { id = productModel.Id }, productModel);
-        //}
-
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult PostProductModel(List<IFormFile> files)
+        public async Task<ActionResult<ProductModel>> PostProductModel(ProductModel productModel)
+        {
+            _context.ProductModel.Add(productModel);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProductModel", new { id = productModel._id }, productModel);
+        }
+
+        // POST: api/Product/Images
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("Images")]
+        public async Task<ActionResult> ImagesProductModel(List<IFormFile> files)
         {
 
             if (files.Count == 0)
@@ -101,12 +101,32 @@ namespace VirtualStoreBackEnd.Controllers
 
             foreach (IFormFile file in files)
             {
-                string filePath = Path.Combine(directoryPath, file.FileName);
+                string filePath = Path.Combine(directoryPath, Guid.NewGuid().ToString());
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
             }
+
+            ImagesModel imageModel = new();
+            imageModel.ProductId = Guid.NewGuid();
+            foreach (IFormFile file in files)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                  await file.CopyToAsync(memoryStream);
+                    var memoryToArray = memoryStream.ToArray();
+                    if(memoryToArray.Length > 0)
+                    {
+                        imageModel.images1 = memoryToArray;
+                        await _context.ImagesModel.AddAsync(imageModel);
+                        await _context.SaveChangesAsync();
+                    }
+                   
+                }
+            }
+
+  
 
 
             return Ok();
@@ -130,7 +150,7 @@ namespace VirtualStoreBackEnd.Controllers
 
         private bool ProductModelExists(Guid id)
         {
-            return _context.ProductModel.Any(e => e.Id == id);
+            return _context.ProductModel.Any(e => e._id == id);
         }
     }
 }

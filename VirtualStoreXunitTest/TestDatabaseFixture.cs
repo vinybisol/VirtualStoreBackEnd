@@ -27,8 +27,8 @@ namespace VirtualStoreXunitTest
                         context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
                         context.AddRange(
-                        new ProductModel { Id = Guid.NewGuid(), FullName = "ROTEADOR", Name = "Roteador", Price = 1234.12M },
-                            new ProductModel { Id = Guid.NewGuid(), FullName = "ROTEADOR", Name = "roteador", Price = 123.1234M });
+                        new ProductModel { _id = Guid.NewGuid(), FullName = "ROTEADOR", Name = "Roteador", Price = 1234.12M },
+                            new ProductModel { _id = Guid.NewGuid(), FullName = "ROTEADOR", Name = "roteador", Price = 123.1234M });
                         context.SaveChanges();
                     }
 

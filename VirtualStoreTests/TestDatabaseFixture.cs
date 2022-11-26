@@ -28,8 +28,8 @@ namespace VirtualStoreTests
                         context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
                         context.AddRange(
-                        new ProductModel { Id = Guid.NewGuid(), Name = "ROTEADOR" },
-                            new ProductModel { Id = Guid.NewGuid(), Name = "ROTEADOR" });
+                        new ProductModel { _id = Guid.NewGuid(), Name = "ROTEADOR" },
+                            new ProductModel { _id = Guid.NewGuid(), Name = "ROTEADOR" });
                         context.SaveChanges();
                     }
 
