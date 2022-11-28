@@ -30,7 +30,16 @@ namespace VirtualStoreBackEnd.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductModel>>> GetProductModel()
         {
-            return await _context.ProductModel.ToListAsync();
+            try
+            {
+                return await _context.ProductModel.Include(image => image.Images).ToListAsync();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
+            }
+            
         }
 
         // GET: api/Products/5
@@ -96,39 +105,25 @@ namespace VirtualStoreBackEnd.Controllers
         {
 
             if (files.Count == 0)
-                return BadRequest();
-            string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "UploadedFiles");
-
-            foreach (IFormFile file in files)
-            {
-                string filePath = Path.Combine(directoryPath, Guid.NewGuid().ToString());
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-
-            ImagesModel imageModel = new();
-            imageModel.ProductId = Guid.NewGuid();
+                return BadRequest();            
+            
             foreach (IFormFile file in files)
             {
                 using (var memoryStream = new MemoryStream())
                 {
                   await file.CopyToAsync(memoryStream);
-                    var memoryToArray = memoryStream.ToArray();
+                    var memoryToArray = memoryStream.ToArray();  
                     if(memoryToArray.Length > 0)
                     {
-                        imageModel.images1 = memoryToArray;
+                        ImagesModel imageModel = new();
+                        imageModel.ProductId = Guid.NewGuid();
+                        imageModel.image = memoryToArray;
                         await _context.ImagesModel.AddAsync(imageModel);
                         await _context.SaveChangesAsync();
                     }
                    
                 }
-            }
-
-  
-
-
+            } 
             return Ok();
         }
 

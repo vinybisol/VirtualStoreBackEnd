@@ -36,5 +36,7 @@ namespace VirtualStoreBackEnd.Model
         [MaxLength(255)]
         public string Note { get; set; } = default!;
 
+        public virtual List<ImagesModel> Images { get ; set; }
+
     }
 }

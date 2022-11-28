@@ -35,23 +35,7 @@ namespace VirtualStoreBackEnd.Migrations
 
                     b.Property<byte[]>("images1")
                         .HasColumnType("varbinary(max)")
-                        .HasColumnName("image1");
-
-                    b.Property<byte[]>("images2")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("image2");
-
-                    b.Property<byte[]>("images3")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("image3");
-
-                    b.Property<byte[]>("images4")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("image5");
-
-                    b.Property<byte[]>("images5")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("image4");
+                        .HasColumnName("image");
 
                     b.HasKey("_id");
 

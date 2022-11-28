@@ -13,19 +13,10 @@ namespace VirtualStoreBackEnd.Model
         [Column("product_id")]
         public Guid ProductId { get; set; }
 
-        [Column("image1")]
-        public Byte[]? images1 { get; set; }
+        [Column("image")]
+        public Byte[]? image { get; set; }
 
-        [Column("image2")]
-        public Byte[]? images2 { get; set; }
-
-        [Column("image3")]
-        public Byte[]? images3 { get; set; }
-
-        [Column("image4")]
-        public Byte[]? images5 { get; set; }
-
-        [Column("image5")]
-        public Byte[]? images4 { get; set; }
+        [ForeignKey("ProductForeignKey")]
+        public ProductModel ProductModel { get; set; }
     }
 }
