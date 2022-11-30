@@ -9,7 +9,7 @@ namespace VirtualStoreBackEnd.Model
     [Table("product")]
     public class ProductModel
     {
-        [Key]        
+        [Key]
         public Guid _id { get; set; } = default!;
 
         [Column("name")]
@@ -36,7 +36,7 @@ namespace VirtualStoreBackEnd.Model
         [MaxLength(255)]
         public string Note { get; set; } = default!;
 
-        public virtual List<ImagesModel> Images { get ; set; }
+        //public virtual List<ImagesModel> Images { get ; set; }
 
     }
 }

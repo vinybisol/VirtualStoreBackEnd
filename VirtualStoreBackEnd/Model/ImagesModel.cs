@@ -16,7 +16,7 @@ namespace VirtualStoreBackEnd.Model
         [Column("image")]
         public Byte[]? image { get; set; }
 
-        [ForeignKey("ProductForeignKey")]
-        public ProductModel ProductModel { get; set; }
+        //[ForeignKey("ProductForeignKey")]
+        //public ProductModel ProductModel { get; set; }
     }
 }

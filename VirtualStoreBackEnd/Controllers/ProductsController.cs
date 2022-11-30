@@ -32,7 +32,7 @@ namespace VirtualStoreBackEnd.Controllers
         {
             try
             {
-                return await _context.ProductModel.Include(image => image.Images).ToListAsync();
+                return await _context.ProductModel.ToListAsync();
             }
             catch(Exception e)
             {
