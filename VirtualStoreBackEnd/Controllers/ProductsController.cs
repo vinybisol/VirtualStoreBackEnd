@@ -26,7 +26,6 @@ namespace VirtualStoreBackEnd.Controllers
         }
 
         // GET: api/Products
-        [DisableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductModel>>> GetProductModel()
         {
@@ -34,12 +33,12 @@ namespace VirtualStoreBackEnd.Controllers
             {
                 return await _context.ProductModel.ToListAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.Message);
             }
-            
+
         }
 
         // GET: api/Products/5
@@ -105,15 +104,15 @@ namespace VirtualStoreBackEnd.Controllers
         {
 
             if (files.Count == 0)
-                return BadRequest();            
-            
+                return BadRequest();
+
             foreach (IFormFile file in files)
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                  await file.CopyToAsync(memoryStream);
-                    var memoryToArray = memoryStream.ToArray();  
-                    if(memoryToArray.Length > 0)
+                    await file.CopyToAsync(memoryStream);
+                    var memoryToArray = memoryStream.ToArray();
+                    if (memoryToArray.Length > 0)
                     {
                         ImagesModel imageModel = new();
                         imageModel.ProductId = Guid.NewGuid();
@@ -121,9 +120,9 @@ namespace VirtualStoreBackEnd.Controllers
                         await _context.ImagesModel.AddAsync(imageModel);
                         await _context.SaveChangesAsync();
                     }
-                   
+
                 }
-            } 
+            }
             return Ok();
         }
 
