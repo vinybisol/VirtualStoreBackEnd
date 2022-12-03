@@ -10,6 +10,16 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7159;http://localhost:5159"
     },
+    "VirtualStoreBackEnd(PRODUCTION)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7159;http://localhost:5159"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

@@ -31,7 +31,7 @@ namespace VirtualStoreBackEnd.Controllers
         {
             try
             {
-                return await _context.ProductModel.ToListAsync();
+                return await _context.ProductModel.Include(e => e.Images).ToListAsync();
             }
             catch (Exception e)
             {
@@ -60,7 +60,7 @@ namespace VirtualStoreBackEnd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductModel(Guid id, ProductModel productModel)
         {
-            if (id != productModel._id)
+            if (id != productModel.Key)
             {
                 return BadRequest();
             }
@@ -94,14 +94,16 @@ namespace VirtualStoreBackEnd.Controllers
             _context.ProductModel.Add(productModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProductModel", new { id = productModel._id }, productModel);
+            return CreatedAtAction("GetProductModel", new { id = productModel.Key }, productModel);
         }
 
         // POST: api/Product/Images
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Images")]
-        public async Task<ActionResult> ImagesProductModel(List<IFormFile> files)
+        public async Task<ActionResult> ImagesProductModel(List<IFormFile> files, Guid productKey)
         {
+            var productModel = await _context.ProductModel.FindAsync(productKey);
+            productModel.Images = new List<ImagesModel>();
 
             if (files.Count == 0)
                 return BadRequest();
@@ -110,19 +112,22 @@ namespace VirtualStoreBackEnd.Controllers
             {
                 using (var memoryStream = new MemoryStream())
                 {
+                    
+
                     await file.CopyToAsync(memoryStream);
                     var memoryToArray = memoryStream.ToArray();
                     if (memoryToArray.Length > 0)
                     {
                         ImagesModel imageModel = new();
-                        imageModel.ProductId = Guid.NewGuid();
                         imageModel.image = memoryToArray;
-                        await _context.ImagesModel.AddAsync(imageModel);
-                        await _context.SaveChangesAsync();
+                        productModel.Images.Add(imageModel);
                     }
+                    
+                    
 
                 }
             }
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -142,9 +147,9 @@ namespace VirtualStoreBackEnd.Controllers
             return NoContent();
         }
 
-        private bool ProductModelExists(Guid id)
+        private bool ProductModelExists(Guid key)
         {
-            return _context.ProductModel.Any(e => e._id == id);
+            return _context.ProductModel.Any(e => e.Key == key);
         }
     }
 }

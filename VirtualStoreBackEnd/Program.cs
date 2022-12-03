@@ -28,6 +28,14 @@ builder.Services.AddCors(options =>
                       });
 });
 
+
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    config.AddJsonFile("appsettings.{Environment}.json",
+                       optional: true,
+                       reloadOnChange: true);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

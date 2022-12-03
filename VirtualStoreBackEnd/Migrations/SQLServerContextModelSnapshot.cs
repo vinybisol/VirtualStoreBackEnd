@@ -24,29 +24,31 @@ namespace VirtualStoreBackEnd.Migrations
 
             modelBuilder.Entity("VirtualStoreBackEnd.Model.ImagesModel", b =>
                 {
-                    b.Property<Guid>("_id")
+                    b.Property<Guid>("Key")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
+                        .HasColumnName("key");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("product_id");
-
-                    b.Property<byte[]>("images1")
+                    b.Property<byte[]>("image")
                         .HasColumnType("varbinary(max)")
                         .HasColumnName("image");
 
-                    b.HasKey("_id");
+                    b.Property<Guid?>("product_key")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Key");
+
+                    b.HasIndex("product_key");
 
                     b.ToTable("images");
                 });
 
             modelBuilder.Entity("VirtualStoreBackEnd.Model.ProductModel", b =>
                 {
-                    b.Property<Guid>("_id")
+                    b.Property<Guid>("Key")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("key");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -78,7 +80,7 @@ namespace VirtualStoreBackEnd.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("short_name");
 
-                    b.HasKey("_id");
+                    b.HasKey("Key");
 
                     b.ToTable("product");
                 });
@@ -104,6 +106,18 @@ namespace VirtualStoreBackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("user");
+                });
+
+            modelBuilder.Entity("VirtualStoreBackEnd.Model.ImagesModel", b =>
+                {
+                    b.HasOne("VirtualStoreBackEnd.Model.ProductModel", null)
+                        .WithMany("Images")
+                        .HasForeignKey("product_key");
+                });
+
+            modelBuilder.Entity("VirtualStoreBackEnd.Model.ProductModel", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

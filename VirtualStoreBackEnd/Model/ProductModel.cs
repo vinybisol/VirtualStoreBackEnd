@@ -10,7 +10,8 @@ namespace VirtualStoreBackEnd.Model
     public class ProductModel
     {
         [Key]
-        public Guid _id { get; set; } = default!;
+        [Column("key")]
+        public Guid Key { get; set; } = default!;
 
         [Column("name")]
         [Required]
@@ -36,7 +37,8 @@ namespace VirtualStoreBackEnd.Model
         [MaxLength(255)]
         public string Note { get; set; } = default!;
 
-        //public virtual List<ImagesModel> Images { get ; set; }
+        [ForeignKey("product_key")]
+        public virtual List<ImagesModel>? Images { get ; set; }
 
     }
 }

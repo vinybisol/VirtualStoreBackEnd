@@ -7,16 +7,11 @@ namespace VirtualStoreBackEnd.Model
     public class ImagesModel
     {
         [Key]
-        [Column("id")]
-        public Guid _id { get; set; }
-
-        [Column("product_id")]
-        public Guid ProductId { get; set; }
+        [Column("key")]
+        public Guid Key { get; set; }
 
         [Column("image")]
         public Byte[]? image { get; set; }
 
-        //[ForeignKey("ProductForeignKey")]
-        //public ProductModel ProductModel { get; set; }
     }
 }
