@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VirtualStoreBackEnd.Data;
 using VirtualStoreBackEnd.Model;
@@ -43,9 +36,9 @@ namespace VirtualStoreBackEnd.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductModel>> GetProductModel(Guid id)
+        public async Task<ActionResult<ProductModel>> GetByIdAsync(Guid id)
         {
-            var productModel = await _context.ProductModel.FindAsync(id);
+            var productModel = await _context.ProductModel.Include(e => e.Images).FirstOrDefaultAsync(entity => entity.Key == id);
 
             if (productModel == null)
             {
@@ -103,28 +96,22 @@ namespace VirtualStoreBackEnd.Controllers
         public async Task<ActionResult> ImagesProductModel(List<IFormFile> files, Guid productKey)
         {
             var productModel = await _context.ProductModel.FindAsync(productKey);
-            productModel.Images = new List<ImagesModel>();
-
-            if (files.Count == 0)
+            if (files.Count == 0 || productModel is null)
                 return BadRequest();
+
+            productModel.Images = new List<ImagesModel>();            
 
             foreach (IFormFile file in files)
             {
-                using (var memoryStream = new MemoryStream())
+                using var memoryStream = new MemoryStream();
+
+                await file.CopyToAsync(memoryStream);
+                var memoryToArray = memoryStream.ToArray();
+                if (memoryToArray.Length > 0)
                 {
-                    
-
-                    await file.CopyToAsync(memoryStream);
-                    var memoryToArray = memoryStream.ToArray();
-                    if (memoryToArray.Length > 0)
-                    {
-                        ImagesModel imageModel = new();
-                        imageModel.image = memoryToArray;
-                        productModel.Images.Add(imageModel);
-                    }
-                    
-                    
-
+                    ImagesModel imageModel = new();
+                    imageModel.image = memoryToArray;
+                    productModel.Images.Add(imageModel);
                 }
             }
             await _context.SaveChangesAsync();
@@ -135,7 +122,7 @@ namespace VirtualStoreBackEnd.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductModel(Guid id)
         {
-            var productModel = await _context.ProductModel.FindAsync(id);
+            var productModel = await _context.ProductModel.Include(e => e.Images).FirstOrDefaultAsync(entity => entity.Key == id);
             if (productModel == null)
             {
                 return NotFound();

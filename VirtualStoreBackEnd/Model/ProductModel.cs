@@ -25,12 +25,10 @@ namespace VirtualStoreBackEnd.Model
 
         [Column("price")]
         [Precision(8,2)]
-        [ConcurrencyCheck()]
         public decimal Price { get; set; } = default;
 
         [Column("price_market")]
         [Precision(8, 2)]
-        [ConcurrencyCheck()]
         public decimal PriceMarket { get; set; } = default;
 
         [Column("note")]
