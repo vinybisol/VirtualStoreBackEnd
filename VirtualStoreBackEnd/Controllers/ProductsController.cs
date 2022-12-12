@@ -20,11 +20,27 @@ namespace VirtualStoreBackEnd.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductModel>>> GetProductModel()
+        public async Task<ActionResult<IEnumerable<ProductModel>>> GetAllProductAsync()
         {
             try
             {
-                return await _context.ProductModel.Include(e => e.Images).ToListAsync();
+                return await _context.ProductModel.OrderBy(o => o.Name).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        // GET: api/Products/Images
+        [HttpGet("/api/ProductsWithImages")]
+        public async Task<ActionResult<IEnumerable<ProductModel>>> GetAllProductWithImagesAsync()
+        {
+            try
+            {
+                return await _context.ProductModel.Include(e => e.Images.Take(1)).ToListAsync();
             }
             catch (Exception e)
             {
@@ -84,10 +100,17 @@ namespace VirtualStoreBackEnd.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductModel>> PostProductModel(ProductModel productModel)
         {
-            _context.ProductModel.Add(productModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProductModel", new { id = productModel.Key }, productModel);
+            try
+            {
+                _context.ProductModel.Add(productModel);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetProductModel", new { id = productModel.Key }, productModel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return BadRequest();
+            }
         }
 
         // POST: api/Product/Images
@@ -99,7 +122,7 @@ namespace VirtualStoreBackEnd.Controllers
             if (files.Count == 0 || productModel is null)
                 return BadRequest();
 
-            productModel.Images = new List<ImagesModel>();            
+            productModel.Images = new List<ImagesModel>();
 
             foreach (IFormFile file in files)
             {
@@ -120,7 +143,7 @@ namespace VirtualStoreBackEnd.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductModel(Guid id)
+        public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
             var productModel = await _context.ProductModel.Include(e => e.Images).FirstOrDefaultAsync(entity => entity.Key == id);
             if (productModel == null)
