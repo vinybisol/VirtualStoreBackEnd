@@ -143,7 +143,7 @@ namespace VirtualStoreBackEnd.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductModel(Guid id)
+        public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
             var productModel = await _context.ProductModel.Include(e => e.Images).FirstOrDefaultAsync(entity => entity.Key == id);
             if (productModel == null)
