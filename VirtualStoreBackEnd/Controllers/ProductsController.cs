@@ -104,7 +104,8 @@ namespace VirtualStoreBackEnd.Controllers
             {
                 _context.ProductModel.Add(productModel);
                 await _context.SaveChangesAsync();
-                return CreatedAtAction("GetProductModel", new { id = productModel.Key }, productModel);
+                //return CreatedAtAction("GetProductModel", new { id = productModel.Key }, productModel);
+                return Created("", productModel);
             }
             catch (Exception ex)
             {
