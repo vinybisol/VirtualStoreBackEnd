@@ -68,7 +68,7 @@ namespace VirtualStoreBackEnd.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductModel(Guid id, ProductModel productModel)
+        public async Task<IActionResult> UpdateProductAsync(Guid id, ProductModel productModel)
         {
             if (id != productModel.Key)
             {
@@ -141,34 +141,6 @@ namespace VirtualStoreBackEnd.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok();
-        }
-        // POST: api/Product/Images
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("/api/ProductsWithImages")]
-        public async Task<ActionResult> AddProductModelAsync(dynamic productInput)
-        {
-            Console.WriteLine(productInput);
-            // var productModel = await _context.ProductModel.FindAsync(productKey);
-            // if (files.Count == 0 || productModel is null)
-            //     return BadRequest();
-
-            // productModel.Images = new List<ImagesModel>();
-
-            // foreach (IFormFile file in files)
-            // {
-            //     using var memoryStream = new MemoryStream();
-
-            //     await file.CopyToAsync(memoryStream);
-            //     var memoryToArray = memoryStream.ToArray();
-            //     if (memoryToArray.Length > 0)
-            //     {
-            //         ImagesModel imageModel = new();
-            //         imageModel.image = memoryToArray;
-            //         productModel.Images.Add(imageModel);
-            //     }
-            // }
-            // await _context.SaveChangesAsync();
-            return Ok(productInput);
         }
 
         // DELETE: api/Products/5
