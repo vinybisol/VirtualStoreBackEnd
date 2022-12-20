@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using VirtualStoreBackEnd.Data;
 using VirtualStoreBackEnd.Model;
+using VirtualStoreBackEnd.Model.Input;
 
 namespace VirtualStoreBackEnd.Controllers
 {
@@ -67,7 +68,7 @@ namespace VirtualStoreBackEnd.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductModel(Guid id, ProductModel productModel)
+        public async Task<IActionResult> UpdateProductAsync(Guid id, ProductModel productModel)
         {
             if (id != productModel.Key)
             {
